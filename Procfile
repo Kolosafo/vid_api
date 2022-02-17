@@ -1,0 +1,1 @@
+web: gunicorn vid_api.wsgi
