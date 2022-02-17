@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-6is3ys*+8w#6e66kq149%m5)dcu!0tc+5o2qe1&%ov!(x=zd#g
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', 'tiktok-vid-api.herokuapp.com']
 
 
 
@@ -39,13 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'API.apps.ApiConfig',
     'rest_framework',
-    "corsheaders",
 
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -131,5 +128,4 @@ MEDIA_URL = '/images/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-CORS_ALLOW_ALL_ORIGINS= True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARD_PROTO', 'https')
+
