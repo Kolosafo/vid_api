@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-6is3ys*+8w#6e66kq149%m5)dcu!0tc+5o2qe1&%ov!(x=zd#g
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', 'tiktok-vid-api.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'tiktok-vid-api.herokuapp.com', '127.0.0.1']
 
 
 
