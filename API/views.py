@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 import urllib.request
 import requests
@@ -8,15 +8,28 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .serializers import VideoDataSerializer
 from .models import video_data
-# from .models import unique_id
+from .models import unique_id
 # # Create your views here.
 
-# @api_view(['GET'])
-# def get_video_data_by_id(request, unique_user_id):
-#     user = unique_id.objects.get(user_id = unique_user_id)
-#     all_user_videos = video_data.objects.filter(user_id = user)
-#     serializer = VideoDataSerializer(all_user_videos, many=True)
-#     return Response(serializer.data)
+#THE BELOW FUNCTION CREATES A NEW VIDEO DATA WHEN IT IS CALLED
+#WE WILL USE IT TO DYNAMICALLY STORE VIDEOS TO THE BACKEND AFTER A USER HAS CLICKED SAVE FROM THE FRONTEND
+
+
+def save_to_downloads(request, DEVICE_ID, video_url, cover_photo, title):
+    try:
+        user = unique_id.objects.get(user_id=DEVICE_ID)
+        video_data.objects.get_or_create(user_id = user, video_url= video_url, cover_photo_url = cover_photo, title=title)
+    except:
+        user = unique_id.objects.create(user_id=DEVICE_ID)
+        video_data.objects.get_or_create(user_id = user, video_url= video_url, cover_photo_url = cover_photo, title=title)
+    return HttpResponse("This is fine!")
+
+@api_view(['GET'])
+def get_video_data_by_id(request, unique_user_id):
+    user = unique_id.objects.get(user_id = unique_user_id)
+    all_user_videos = video_data.objects.filter(user_id = user)
+    serializer = VideoDataSerializer(all_user_videos, many=True)
+    return Response(serializer.data)
 
 # @api_view(['POST'])
 # def create_video_data(request, unique_user_id):
