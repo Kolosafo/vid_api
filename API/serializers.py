@@ -5,4 +5,4 @@ from .models import video_data
 class VideoDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = video_data
-        fields = ['video_url', 'cover_photo_url', 'title']
+        fields = ['user_id', 'video_url', 'title']

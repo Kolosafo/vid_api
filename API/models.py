@@ -14,9 +14,7 @@ class unique_id(models.Model):
 
 class video_data(models.Model):
     user_id = models.ForeignKey(unique_id, default=None, on_delete=models.CASCADE)
-    video_url = models.CharField(max_length=5000)
-    cover_photo_url = models.CharField(max_length=5000)
-    title = models.CharField(max_length=5000)
+    video_url = models.URLField(max_length=5000)
     date_created = models.DateTimeField(default = timezone.now())
 
     def __str__(self):

@@ -1,6 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-import urllib.request
+from urllib.parse import urlsplit
 import requests
 import json
 
@@ -14,15 +14,15 @@ from .models import unique_id
 #THE BELOW FUNCTION CREATES A NEW VIDEO DATA WHEN IT IS CALLED
 #WE WILL USE IT TO DYNAMICALLY STORE VIDEOS TO THE BACKEND AFTER A USER HAS CLICKED SAVE FROM THE FRONTEND
 
-
-def save_to_downloads(request, DEVICE_ID, video_url, cover_photo, title):
+@api_view(['GET'])
+def save_to_downloads(request, DEVICE_ID, video_url):
     try:
         user = unique_id.objects.get(user_id=DEVICE_ID)
-        video_data.objects.get_or_create(user_id = user, video_url= video_url, cover_photo_url = cover_photo, title=title)
+        video_data.objects.get_or_create(user_id = user, video_url= video_url)
     except:
         user = unique_id.objects.create(user_id=DEVICE_ID)
-        video_data.objects.get_or_create(user_id = user, video_url= video_url, cover_photo_url = cover_photo, title=title)
-    return HttpResponse("This is fine!")
+        video_data.objects.get_or_create(user_id = user, video_url= video_url)
+    return Response("This is fine!")
 
 @api_view(['GET'])
 def get_video_data_by_id(request, unique_user_id):
@@ -30,18 +30,6 @@ def get_video_data_by_id(request, unique_user_id):
     all_user_videos = video_data.objects.filter(user_id = user)
     serializer = VideoDataSerializer(all_user_videos, many=True)
     return Response(serializer.data)
-
-# @api_view(['POST'])
-# def create_video_data(request, unique_user_id):
-#     serializer = VideoDataSerializer(data=request.data)
-
-#     if serializer.is_valid():
-#         instance = serializer.save(commit=False)
-#         instance.user_id= unique_id
-#         instance.save
-#     else:
-#         print("Not a valid Data")
-#     return Response(serializer.data)
 
     
 
@@ -59,14 +47,18 @@ def Test(request, url):
 
     #json.loads converts string dictionary to dictionary
     response_dict = json.loads(response.text)
+    print(response_dict)
+    #Removing query from the play url for better processing
+    get_play_url= response_dict['data']['play']
+    split = urlsplit(get_play_url)
+    play_url = split.scheme+"://" + split.netloc + split.path
+
 
     #The play_url below is the link to play the video without watermark
     video_data_dict = {
-        'play_url': response_dict['data']['play'],
-        'cover_photo_url': response_dict['data']['origin_cover'],
-        'title': response_dict['data']['title']
+        'play_url': play_url,
+        'title': response_dict['data']['title'],
     }
-    print(video_data_dict['play_url'])
 
     #using the url lib we are able to save the video to our computer
     #urllib.request.urlretrieve(play_url, "video1.mp4")
