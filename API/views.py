@@ -35,14 +35,12 @@ def get_video_data_by_id(request, unique_user_id):
 
 @api_view(['GET'])
 def Test(request, url):
-    api_url = "https://tiktok-video-downloader1.p.rapidapi.com/api/audio"
-    querystring = {"url":url}
-
+    api_url = "https://tiktok-video-no-watermark2.p.rapidapi.com/"
+    querystring = {"url":url,"hd":"0"}
     headers = {
-	"X-RapidAPI-Host": "tiktok-video-downloader1.p.rapidapi.com",
-	"X-RapidAPI-Key": "7f9ace4cbdmshc72395aeeec405fp169c25jsn7ff5e0fe4baf"
-}
-
+        'x-rapidapi-host': "tiktok-video-no-watermark2.p.rapidapi.com",
+        'x-rapidapi-key': "7f9ace4cbdmshc72395aeeec405fp169c25jsn7ff5e0fe4baf"
+        }
 
     response = requests.request("GET", api_url, headers=headers, params=querystring)
     print(response)
